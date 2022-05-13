@@ -1,5 +1,5 @@
+// Javascript Class
 class ExampleClass {}
-
 
 const example = new ExampleClass();
 
