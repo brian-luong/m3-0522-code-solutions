@@ -16,8 +16,6 @@
   "extensions": [
     "thebearingedge.lfz-code"
   ],
-  "remoteUser": "vscode",
-  "containerUser": "vscode",
   "postCreateCommand": "sh .devcontainer/post-create-command.sh",
   "settings": {
     "css.validate": false,

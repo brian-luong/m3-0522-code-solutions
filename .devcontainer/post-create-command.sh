@@ -12,9 +12,9 @@ if [ -d /home/dev/.ssh ]; then
   sudo chmod 644 /home/dev/.ssh/*.pub
 fi
 
-echo 'changing project file permissions'
-sudo chown -R dev:dev .
-find . \( -type d -o -type f \) -exec sudo -u dev chmod g+w {} \;
+# echo 'changing project file permissions'
+# sudo chown -R dev:dev .
+# find . \( -type d -o -type f \) -exec sudo -u dev chmod g+w {} \;
 
 echo 'changing default file acl'
 sudo -u dev setfacl -Rm d:g:dev:rw .
