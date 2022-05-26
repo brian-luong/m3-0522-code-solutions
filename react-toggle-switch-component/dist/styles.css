@@ -1,0 +1,41 @@
+* {
+  box-sizing: border-box;
+}
+
+.switch-container {
+  display: flex;
+  align-items: center;
+}
+
+.switch {
+  width: 40px;
+  height: 22px;
+  border: 1px solid black;
+  margin-right: 10px;
+  border-radius: 16px;
+  background-color: lightgrey;
+  position: relative;
+  cursor: pointer;
+}
+
+.circle {
+  height: 100%;
+  width: 20px;
+  border-radius: 50%;
+  background-color: #fff;
+  position: absolute;
+  top: 0;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 20%);
+}
+
+.off {
+  left: 0;
+}
+
+.on {
+  right: 0;
+}
+
+.green-bg {
+  background-color: green;
+}
