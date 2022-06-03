@@ -9,20 +9,16 @@ const pokedex = [
   { number: '039', name: 'Jigglypuff' }
 ];
 
-function DisplayList(props) {
-
-const items = props.pokedex;
-const listItems = items.map((item) =>
-  <li>{item.name}</li>
-);
-
-  return (
-    <ul>
-      {listItems}
-    </ul>
-  );
+const element = (
+  <ul>
+{
+  pokedex.map(pokemon => {
+    return <li key={pokemon.number}>{pokemon.name}</li>
+  })
 }
+  </ul>
+)
 
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
-root.render(<DisplayList pokedex={pokedex}/>)
+root.render(element)
