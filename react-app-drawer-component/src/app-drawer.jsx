@@ -15,6 +15,9 @@ class ToggleMenu extends React.Component {
   }
 
   closeMenu() {
+    if (!event.target.className === 'menu-overlay'){
+      return;
+    }
     this.setState(prevState => ({
       isClicked: false
     }));
@@ -42,28 +45,27 @@ class ToggleMenu extends React.Component {
     }
   }
 
-  event () {
-    console.log(event.target);
-  }
-
-
   render() {
     return (
-      <div>
-        <button className='button' onClick={this.openMenu}>CLICK ME</button>
-        <div className={`menu-overlay ${this.hideClass()}`} onClick={this.closeMenu}>
+<div>
+  <div className='bars' onClick={this.openMenu}><i class="fa-solid fa-bars"></i></div>
+    <div className={`menu-overlay ${this.hideClass()}`}>
       <div className="menu">
         <h2 className="menu-title">Menu</h2>
-        <ul>
-          {
-                this.listItems().map(item => {
-              return <li key={item.number} onClick={this.closeMenu}>{item.name}</li>
+          <ul>
+            {
+            this.listItems().map(item => {
+            return <li key={item.number} onClick={this.closeMenu}>{item.name}</li>
             })
-          }
-        </ul>
+            }
+          </ul>
       </div>
-    </div>
-      </div>
+    <div className='shade' onClick={this.closeMenu}></div>
+  </div>
+  <main>
+          <img src="https://i.etsystatic.com/7897174/r/il/edb48e/667405984/il_794xN.667405984_2nm1.jpg" alt="Tri Force" />
+  </main>
+</div>
     );
   }
 
