@@ -1,40 +1,36 @@
 import React from "react";
 
-class TopicItem extends React.Component {
-
-
-  render(){
-    const topic = this.props.topic;
-    return <li className="collapsible-container" >
-        <div className="topic" >{topic.topic}</div>
-        <div className="content">{topic.content}</div>
-      </li>
-  }
-}
-
-class TopicList extends React.Component {
+class Accordion extends React.Component {
   constructor(props) {
     super(props);
-    this.handleClick = this.handleClick.bind(this);
+    this.state = {
+      activeId: null
+    }
   }
 
-  handleClick() {
-    const listItems = document.querySelectorAll('li');
-    console.log(listItems);
-    console.log(event.target.parentNode);
+  handleClick(topicId) {
+    const activeId = this.state.activeId;
+    if(activeId === topicId) {
+      this.setState({ activeId: null })
+    } else {
+      this.setState({ activeId: topicId })
+    }
   }
 
   render() {
     const topics = this.props.topics;
-    console.log('topics', topics);
-    const listItems = topics.map((item) => <TopicItem key={item.topic.toString()} topic={item}  />)
-    console.log('listItems', listItems)
+    const topicList = topics.map((topic)=> {
+      return <div key={topic.topicId} className='topic' onClick={() => this.handleClick(topic.topicId)}>
+        <div className="topic-title">{topic.title}</div>
+        <div className={topic.topicId === this.state.activeId ? 'topic-content active' : 'topic-content'}>{topic.content}</div>
+      </div>
+    })
     return (
-      <ul className="accordian" onClick={this.handleClick}>
-        {listItems}
-      </ul>
+      <div className='accordion-container'>
+        {topicList}
+      </div>
     )
   }
 }
 
-export default TopicList;
+export default Accordion

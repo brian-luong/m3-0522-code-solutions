@@ -8,32 +8,32 @@ body {
 }
 
 #root {
+  width: 100%;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-}
-.accordian {
-  width: 500px;
-  list-style: none;
-}
-
-.collapsible-container {
-  margin-bottom: 3px;
 }
 
 .topic {
-  padding: 10px;
+  width: 500px;
   border: 1px solid black;
-  background-color: lightgrey;
+  margin-bottom: 3px;
+  border-bottom: none;
   cursor: pointer;
 }
 
-.content {
+.topic-title {
+  font-size: 1.5rem;
+  background-color: lightgrey;
   padding: 10px;
-    border: 1px solid black;
-    border-top: none;
-    display: none;
+  border-bottom: 1px solid black;
+}
+
+.topic-content {
+  padding: 10px;
+  border-bottom: 1px solid black;
+  display: none;
 }
 
 .active {
