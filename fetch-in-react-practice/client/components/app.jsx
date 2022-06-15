@@ -32,39 +32,38 @@ export default class App extends React.Component {
       body: JSON.stringify(newTodo)
     })
     .then(res => res.json())
-    .then(data => {
-      const prevState = this.state.todos
-      const newState = prevState.concat(data)
-      this.setState({todos: newState})
+    .then(todo => {
+      const allTodos = this.state.todos.concat(todo)
+      this.setState({ todos: allTodos
+})
     })
     .catch(err => console.error('Fetched failed!', err))
 
   }
 
   toggleCompleted(todoId) {
+    const oldTodo = this.state.todos.find(todo => {
+      return todo.todoId === todoId
+    })
 
+    fetch(`/api/todos/${todoId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ isCompleted: !oldTodo.isCompleted })
+    })
+    .then(res => res.json())
+    .then(updated => {
+     const allTodos = this.state.todos.map(original => {
+      return original.todoId === updated.todoId
+      ? updated
+      : original
+     })
+     this.setState({ todos: allTodos })
 
-    /**
-     * Find the index of the todo with the matching todoId in the state array.
-     * Get its "isCompleted" status.
-     * Make a new object containing ONE PROPERTY: the opposite "isCompleted" status.
-     * Use fetch to send a PATCH request to `/api/todos/${todoId}`
-     * Then 😉, once the response JSON is received and parsed,
-     *   - create a shallow copy of the todos array from state
-     *   - replace the old todo with the todo received from the server
-     *   - replace the old todos in the state with the new one (you know the index).
-     *
-     * NOTE: "toggle" means to flip back and forth, so clicking a todo
-     * in the list repeatedly should "toggle" its isCompleted status back and forth.
-     *
-     * DO NOT try to calculate the index of the todo by subtracting 1 from the id.
-     *
-     * DO NOT MUTATE the original state array, nor any objects within it.
-     * https://reactjs.org/docs/optimizing-performance.html#the-power-of-not-mutating-data
-     *
-     * TIP: Be sure to SERIALIZE the updates in the body with JSON.stringify()
-     * And specify the "Content-Type" header as "application/json"
-     */
+    })
+    .catch(err => console.error('Fetched failed!', err))
   }
 
   render() {
