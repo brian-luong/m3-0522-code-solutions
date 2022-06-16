@@ -55,14 +55,25 @@ export default class App extends React.Component {
     })
     .then(res => res.json())
     .then(updated => {
-     const allTodos = this.state.todos.map(original => {
-      return original.todoId === updated.todoId
-      ? updated
-      : original
+      const allTodos = this.state.todos.slice()
+      const newTodos = []
+      for (let i = 0; i < allTodos.length; i++) {
+        if (updated.todoId === allTodos[i].todoId) {
+          newTodos.push(updated)
+        } else {
+          newTodos.push(allTodos[i])
+        }
+      }
+      // const allTodos = this.state.todos.map(original => {
+      //  return original.todoId === updated.todoId
+      //  ? updated
+      // : original
+      // })
+      this.setState({ todos: newTodos })
      })
-     this.setState({ todos: allTodos })
 
-    })
+
+
     .catch(err => console.error('Fetched failed!', err))
   }
 
