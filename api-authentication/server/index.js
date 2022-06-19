@@ -49,20 +49,42 @@ app.post('/api/auth/sign-in', (req, res, next) => {
   }
 
   /* your code starts here */
-    const sql = `
-      SELECT "userId",
-      "hashedPassword"
-      FROM users
-      WHERE $1
-      returning *
-    `;
+  const sql = `
+    select *
+      from "users"
+     where "username" = $1
+  `;
 
     const params = [username];
 
     db.query(sql, params)
       .then(result => {
-        const [users] = result.rows;
-        res.status(201).json(users);
+        const [user] = result.rows;
+        if (!user) {
+          throw new ClientError(401, 'invalid login')
+        } else {
+          const hashedPassword = user.hashedPassword
+          argon2
+            .verify(hashedPassword, password)
+            .then(isMatching => {
+              if(!isMatching) {
+                throw new ClientError(401, 'invalid login')
+              } else {
+                const payload = {
+                  userId: user.userId,
+                  username: user.username
+                }
+                const token = jwt.sign(payload, process.env.TOKEN_SECRET)
+                res.status(200).json({token: token, user: payload})
+              }
+            })
+            .catch(err => {
+              console.error(err);
+              res.status(401).json({
+                error: 'invalid login'
+              });
+            });
+        }
       })
       .catch(err => {
         console.error(err);
