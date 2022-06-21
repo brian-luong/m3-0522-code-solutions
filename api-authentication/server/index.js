@@ -50,66 +50,34 @@ app.post('/api/auth/sign-in', (req, res, next) => {
 
   /* your code starts here */
   const sql = `
-    select *
+    select "userId",
+           "hashedPassword"
       from "users"
-     where "username" = $1
+    where "username" = $1
   `;
-
-    const params = [username];
+  const params = [username];
 
     db.query(sql, params)
       .then(result => {
         const [user] = result.rows;
         if (!user) {
           throw new ClientError(401, 'invalid login')
-        } else {
-          const hashedPassword = user.hashedPassword
-          argon2
+        }
+
+          const { userId, hashedPassword } = user
+          return argon2
             .verify(hashedPassword, password)
             .then(isMatching => {
               if(!isMatching) {
                 throw new ClientError(401, 'invalid login')
-              } else {
-                const payload = {
-                  userId: user.userId,
-                  username: user.username
-                }
-                const token = jwt.sign(payload, process.env.TOKEN_SECRET)
-                res.status(200).json({token: token, user: payload})
               }
-            })
-            .catch(err => {
-              console.error(err);
-              res.status(401).json({
-                error: 'invalid login'
-              });
-            });
-        }
-      })
-      .catch(err => {
-        console.error(err);
-        res.status(401).json({
-          error: 'invalid login'
-        });
-      });
+                const payload = { userId, username }
+                const token = jwt.sign(payload, process.env.TOKEN_SECRET)
+                res.status(200).json({ token, user: payload})
 
-  /**
-   * Query the database to find the "userId" and "hashedPassword" for the "username".
-   * Then, 😉
-   *    If no user is found,
-   *      throw a 401: 'invalid login' error.
-   *    If a user is found,
-   *      confirm that the password included in the request body matches the "hashedPassword" with `argon2.verify()`
-   *      Then, 😉
-   *        If the password does not match,
-   *          throw a 401: 'invalid login' error.
-   *        If the password does match,
-   *          Create a payload object containing the user's "userId" and "username".
-   *          Create a new signed token with `jwt.sign()`, using the payload and your TOKEN_SECRET
-   *          Send the client a 200 response containing the payload and the token.
-   *      Catch any error.
-   * Catch any error.
-   */
+            })
+      })
+      .catch(err => next(err));
 
 });
 
