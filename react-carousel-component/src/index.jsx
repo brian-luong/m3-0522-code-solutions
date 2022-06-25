@@ -21,6 +21,10 @@ const data = [
   {
     pokemonId: 4,
     imageUrl: 'https://assets.pokemon.com/static2/_ui/img/og-default-image.jpeg'
+  },
+  {
+    pokemonId: 5,
+    imageUrl: 'https://assets.pokemon.com/static2/_ui/img/og-default-image.jpeg'
   }
 ]
 
