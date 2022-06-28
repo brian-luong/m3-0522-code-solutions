@@ -1,0 +1,52 @@
+User can sign up
+    user clicks on "Sign up" in nav
+    App.jsx: window listens for hash changes
+    set the route state to sign-up
+    Get react-context-jwt from local storage and assign it to const token
+    If token exists: jwtDecode token or null and assign it to const user
+    What is jwtDecode?
+    Set the state to isAuthorizing to false
+    render() gets called
+    If isAuthorizing is falsy, return null
+    Deconstruct the object this.state and assign it to 2 variables, user and route
+    Deconstruct the object this, and assign it to 2 variables handleSignIn and handleSignout methods
+    Create an object with user, route, handleSignIn and handleSignOut and assign to the const contextValue
+    Return
+    Context provide with contextValue object
+    Call this.renderPage()
+    Deconstruct path from the object this.state.route and assign to the const path
+    If path === “sign-up”, return the component: <Auth />
+    <auth>
+    Set welcomeMessage to Create an account to get started”
+    Pass in welcomeMessage to { welcomeMessage }
+    Call AuthForm component with props key and action = as signup
+    <authform>
+    Call render(), passing in action as signup
+    Update text and button to say signup
+    When user hits submit, destructure action from this.props object and assign it to the cosnt action
+    Call a fetch command with post
+    Index.js
+    Find the matching endpoint (/api/auth/sign-up)
+    Hash password and send sql query to database
+
+User can sign-in
+    User clicks on sign-in
+    Passes in Sign-in as props within auth.jsx
+    Catch a fetch with the end point /api/auth/sign-in as a post method
+    Within index.js send a sql query that searches by the username
+    Verify the hashedPassword and password with argon2
+    If verified return a token with user payload
+    sets route to # ???
+    Render home component
+
+User can stay signed in (even if they refresh the page).
+    When user signs in, sets token into local storage
+    React-context-jwt: key
+    Sets route state to #
+    Returns <Home /> within renderPage method
+    Re-renders page
+
+User can sign out.
+    Within app.jsx, handleSignOut sets state to user: null and removes token from local storage
+    Re-renders page
+    Calls renderPage method which returns <Auth /> Component
