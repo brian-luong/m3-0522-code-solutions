@@ -41,7 +41,9 @@ img {
 .progress-bar {
   margin-top: 15px;
   display: flex;
+  padding-left: 0;
   justify-content: center;
+  list-style: none;
 }
 
 .progress-dot {

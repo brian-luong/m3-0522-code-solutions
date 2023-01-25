@@ -1,31 +1,90 @@
 import React from "react";
 
+const pokedex = [
+  {
+    pokemonId: 1,
+    imageUrl: 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/001.png'
+  },
+  {
+    pokemonId: 2,
+    imageUrl: 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/002.png'
+  },
+  {
+    pokemonId: 3,
+    imageUrl: 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/003.png'
+  },
+  {
+    pokemonId: 4,
+    imageUrl: 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/004.png'
+  },
+  {
+    pokemonId: 5,
+    imageUrl: 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/005.png'
+  }
+]
+
+function ProgressDot (props) {
+  const activeId = props.activeId;
+  return (
+  <ul className="progress-bar">
+      {
+        pokedex.map((dot, index) => {
+          return <li className="progress-dot" key={dot.pokemonId}><i className={index === activeId ? "fas fa-circle" : "far fa-circle"}></i></li>
+        }
+
+      )
+      }
+  </ul>
+  )
+}
+
+function DisplayImage(props) {
+  const activeId = props.activeId;
+  return (
+    <img src={pokedex[activeId].imageUrl}/>
+  )
+}
+
 
 class Carousel extends React.Component {
   constructor(props) {
     super(props);
+    this.nextImg = this.nextImg.bind(this);
+    this.prevImg = this.prevImg.bind(this);
     this.state = {
       activeId: 0
     };
   }
+
+  nextImg() {
+    this.setState({ activeId: this.state.activeId + 1 });
+  }
+
+  prevImg() {
+    this.setState({ activeId: this.state.activeId - 1 });
+  }
+
+
+
   render(){
 
+    const active = this.state.activeId;
+    if (active > pokedex.length - 1) {
+      this.setState({activeId: 0})
+    } else if (active < 0) {
+      this.setState({activeId: pokedex.length - 1})
+    }
+    console.log(active);
     return (
       <div className="carousel">
         <div className="image-carousel">
-          <i className="fas fa-chevron-left ctrl"></i>
+          <i className="fas fa-chevron-left ctrl" onClick={this.prevImg}></i>
           <div className="img-gallery">
-            <img src="https://assets.pokemon.com/static2/_ui/img/og-default-image.jpeg" alt=""/>
+            <DisplayImage activeId={active} />
           </div>
-          <i className="fas fa-chevron-right ctrl"></i>
+          <i className="fas fa-chevron-right ctrl" onClick={this.nextImg}></i>
         </div>
-        <div className="progress-bar">
-          <div className="progress-dot"><i className="fas fa-circle" data-id="1"></i></div>
-          <div className="progress-dot"><i className="far fa-circle" data-id="2"></i></div>
-          <div className="progress-dot"><i className="far fa-circle" data-id="3"></i></div>
-          <div className="progress-dot"><i className="far fa-circle" data-id="4"></i></div>
-          <div className="progress-dot"><i className="far fa-circle" data-id="5"></i></div>
-        </div>
+        <ProgressDot activeId={active} />
       </div>
     )
   }
