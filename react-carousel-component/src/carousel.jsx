@@ -56,6 +56,7 @@ class Carousel extends React.Component {
     };
   }
 
+
   nextImg() {
     this.setState({ activeId: this.state.activeId + 1 });
   }
@@ -69,11 +70,7 @@ class Carousel extends React.Component {
   render(){
 
     const active = this.state.activeId;
-    if (active > pokedex.length - 1) {
-      this.setState({activeId: 0})
-    } else if (active < 0) {
-      this.setState({activeId: pokedex.length - 1})
-    }
+
     console.log(active);
     return (
       <div className="carousel">
