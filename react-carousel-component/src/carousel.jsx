@@ -28,8 +28,8 @@ function ProgressDot (props) {
   return (
   <ul className="progress-bar">
       {
-        pokedex.map((dot, index) => {
-          return <li className="progress-dot" key={dot.pokemonId}><i className={index === activeId ? "fas fa-circle" : "far fa-circle"}></i></li>
+        pokedex.map((dot) => {
+          return <li className="progress-dot" data-id={dot.pokemonId} key={dot.pokemonId}><i className={dot.pokemonId === activeId ? "fas fa-circle" : "far fa-circle"}></i></li>
         }
 
       )
@@ -40,8 +40,11 @@ function ProgressDot (props) {
 
 function DisplayImage(props) {
   const activeId = props.activeId;
+
+  const imgUrl = pokedex.find(element => element.pokemonId === activeId).imageUrl;
+
   return (
-    <img src={pokedex[activeId].imageUrl}/>
+    <img src={imgUrl}/>
   )
 }
 
@@ -52,26 +55,41 @@ class Carousel extends React.Component {
     this.nextImg = this.nextImg.bind(this);
     this.prevImg = this.prevImg.bind(this);
     this.state = {
-      activeId: 0
+      pokemonId: 1
     };
   }
 
 
+
+
   nextImg() {
-    this.setState({ activeId: this.state.activeId + 1 });
+    const pokemonIds = pokedex.map(ele => ele.pokemonId);
+    const active = this.state.pokemonId;
+    const index = pokemonIds.indexOf(active) + 1;
+
+    if (index < pokemonIds.length) {
+      this.setState({ pokemonId: pokemonIds[index] });
+    } else if (index === pokemonIds.length) {
+      this.setState({ pokemonId: pokemonIds[0] });
+    }
+
   }
 
   prevImg() {
-    this.setState({ activeId: this.state.activeId - 1 });
+    const pokemonIds = pokedex.map(ele => ele.pokemonId);
+    const active = this.state.pokemonId;
+    const index = pokemonIds.indexOf(active) - 1;
+
+    if (index < 0) {
+      this.setState({ pokemonId: pokemonIds[pokemonIds.length - 1] });
+    } else if (index < pokemonIds.length) {
+      this.setState({ pokemonId: pokemonIds[index] });
+    }
+
   }
 
-
-
   render(){
-
-    const active = this.state.activeId;
-
-    console.log(active);
+    const active = this.state.pokemonId;
     return (
       <div className="carousel">
         <div className="image-carousel">
